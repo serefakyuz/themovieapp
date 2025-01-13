@@ -17,6 +17,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
+        buildConfigField("String", "API_KEY", "a092af521228a42d364799a276f2dc7e")
+        buildConfigField("String", "ROOT_URL", "https://api.themoviedb.org/3/")
     }
 
     buildTypes {
@@ -26,6 +30,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildFeatures {
+                buildConfig = true
+            }
         }
     }
     compileOptions {
