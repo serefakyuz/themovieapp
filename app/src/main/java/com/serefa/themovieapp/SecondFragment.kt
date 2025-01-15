@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.serefa.themovieapp.databinding.FragmentSecondBinding
+import com.serefa.themovieapp.feature.common.BaseFragment
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class SecondFragment : BaseFragment() {
 
     private var _binding: FragmentSecondBinding? = null
 

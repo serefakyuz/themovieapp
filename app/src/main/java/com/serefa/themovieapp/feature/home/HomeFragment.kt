@@ -1,24 +1,30 @@
-package com.serefa.themovieapp
+package com.serefa.themovieapp.feature.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.serefa.themovieapp.R
+import com.serefa.themovieapp.data.repository.movie.usecase.PopularMoviesUseCase
 import com.serefa.themovieapp.databinding.FragmentFirstBinding
+import com.serefa.themovieapp.feature.common.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
-class FirstFragment : Fragment() {
+@AndroidEntryPoint
+class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentFirstBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
+    private val viewModel: HomeViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,8 +38,20 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeData()
+
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+    }
+
+    fun observeData(){
+        viewModel.apply {
+            lifecycleScope.launch {
+                popularMovies.collect{
+                    binding.textviewFirst.text = it.toString()
+                }
+            }
         }
     }
 

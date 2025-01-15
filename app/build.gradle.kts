@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlinAndroidKsp)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hiltAndroid)
 }
 
@@ -19,8 +19,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 
-        buildConfigField("String", "API_KEY", "a092af521228a42d364799a276f2dc7e")
-        buildConfigField("String", "ROOT_URL", "https://api.themoviedb.org/3/")
+        buildConfigField("String", "ACCESS_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMDkyYWY1MjEyMjhhNDJkMzY0Nzk5YTI3NmYyZGM3ZSIsIm5iZiI6MTczNjcyMjk3NS40ODUsInN1YiI6IjY3ODQ0YTFmOTRmYzg3ZWY0ODdiMTlmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pA_sKXKMlQeDh4EOEt84LssvyaNtAzlm5PE3iKj9Fww\"")
+        buildConfigField("String", "ROOT_URL", "\"https://api.themoviedb.org/\"")
     }
 
     buildTypes {

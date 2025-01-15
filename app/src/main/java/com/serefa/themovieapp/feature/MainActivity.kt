@@ -1,4 +1,4 @@
-package com.serefa.themovieapp
+package com.serefa.themovieapp.feature
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,9 +9,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.serefa.themovieapp.R
 import com.serefa.themovieapp.databinding.ActivityMainBinding
+import com.serefa.themovieapp.feature.common.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding

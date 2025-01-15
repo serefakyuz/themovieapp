@@ -20,7 +20,6 @@ import javax.inject.Singleton
 object ApiModule {
 
     private const val QUERY_LANGUAGE = "en"
-    private const val IMAGE_LANGUAGE = "en,null"
 
     @Singleton
     @Provides
@@ -31,28 +30,28 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideInterceptor(): Interceptor =
-        Interceptor {
-            val url = it.request()
+        Interceptor { chain ->
+            val url = chain.request()
                 .url
                 .newBuilder()
-                .addQueryParameter("api_key", BuildConfig.API_KEY)
                 .addQueryParameter("language", QUERY_LANGUAGE)
-                .addQueryParameter("include_image_language", IMAGE_LANGUAGE)
                 .build()
 
-
-            val request = it.request()
+            val request = chain.request()
                 .newBuilder()
+                .addHeader("accept", "application/json")
+                .addHeader("Authorization", "Bearer ${BuildConfig.ACCESS_TOKEN}")
                 .url(url)
                 .build()
 
-            it.proceed(request)
+            chain.proceed(request)
         }
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient = OkHttpClient.Builder()
+    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, customInterceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(customInterceptor)
         .build()
 
     @Singleton
@@ -69,7 +68,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun providesMoshi(): Moshi = Moshi
+    fun provideMoshi(): Moshi = Moshi
         .Builder()
         .run {
             add(KotlinJsonAdapterFactory())
