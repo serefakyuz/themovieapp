@@ -65,11 +65,9 @@ data class MovieDetailResponse(
 ) : BaseResponse(), IPlayable {
 
 
-    override fun getThumbUrl(quality: ImageQuality) = if(posterPath == null || posterPath == "") {
-        null // Can be used a placeholder
-    }else{
-        "${BuildConfig.BASE_IMAGE_URL}${quality.value}$posterPath"
-    }
+    override fun getThumbUrl(quality: ImageQuality) =
+        "${BuildConfig.BASE_IMAGE_URL}${quality.value}$backdropPath"
+
 
     override fun getVideoUrl(): String {
         TODO("Not yet implemented")

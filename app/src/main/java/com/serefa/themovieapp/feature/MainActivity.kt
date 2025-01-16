@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.serefa.themovieapp.R
 import com.serefa.themovieapp.databinding.ActivityMainBinding
 import com.serefa.themovieapp.feature.common.BaseActivity
@@ -31,6 +32,13 @@ class MainActivity : BaseActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> binding.toolbar.visibility = View.VISIBLE
+                else -> binding.toolbar.visibility = View.GONE
+            }
+        }
 
     }
 

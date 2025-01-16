@@ -68,6 +68,10 @@ dependencies {
     //ImageLoader
     implementation (libs.glide)
     annotationProcessor(libs.compiler)
+    //Exoplayer
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

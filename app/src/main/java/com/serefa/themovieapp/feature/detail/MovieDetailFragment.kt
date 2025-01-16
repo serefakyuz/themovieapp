@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.serefa.themovieapp.data.model.movie.detail.MovieDetailResponse
 import com.serefa.themovieapp.data.model.movie.local.ImageQuality
 import com.serefa.themovieapp.databinding.FragmentMovieDetailBinding
@@ -33,8 +34,13 @@ class MovieDetailFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
+        binding.imageViewPlay.setOnClickListener {
+            val action = MovieDetailFragmentDirections.
+            actionDetailFragmentToPlayerFragment(
+                viewModel.movieDetail.value.overview?:"")
+            findNavController().navigate(action)
+        }
         return binding.root
     }
 

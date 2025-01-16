@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.serefa.themovieapp.R
 import com.serefa.themovieapp.data.model.movie.Movie
 import com.serefa.themovieapp.databinding.FragmentHomeBinding
 import com.serefa.themovieapp.feature.common.BaseFragment
@@ -73,7 +72,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun onMovieClicked(movie: Movie) {
-        val action = HomeFragmentDirections.actionFirstFragmentToSecondFragment(movie.id.toString())
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id.toString())
         findNavController().navigate(action)
     }
 
