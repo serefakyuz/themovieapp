@@ -1,6 +1,7 @@
 package com.serefa.themovieapp.data.repository.movie
 
-import com.serefa.themovieapp.data.model.MovieResponseModel
+import com.serefa.themovieapp.data.model.movie.MovieResponseModel
+import com.serefa.themovieapp.data.model.movie.detail.MovieDetailResponse
 import kotlinx.coroutines.flow.Flow
 import com.serefa.themovieapp.data.repository.Result
 
@@ -13,4 +14,6 @@ interface MovieRepository {
     }
 
     suspend fun getMovieList(sortBy: String, page: Int): Flow<Result<MovieResponseModel>>
+
+    suspend fun getMovieDetail(movieId: String): Flow<Result<MovieDetailResponse>>
 }

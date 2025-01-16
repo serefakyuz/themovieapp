@@ -1,6 +1,7 @@
-package com.serefa.themovieapp.data.model
+package com.serefa.themovieapp.data.model.movie
 
 
+import com.serefa.themovieapp.data.model.BaseResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -14,4 +15,4 @@ data class MovieResponseModel(
     val totalPages: Int?,
     @Json(name = "total_results")
     val totalResults: Int?
-)
+): BaseResponse()

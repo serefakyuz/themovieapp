@@ -1,7 +1,8 @@
-package com.serefa.themovieapp.data.model
+package com.serefa.themovieapp.data.model.movie
 
 
 import com.serefa.themovieapp.BuildConfig
+import com.serefa.themovieapp.data.model.movie.local.ImageQuality
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -35,6 +36,10 @@ data class Movie(
     val voteAverage: Double?,
     @Json(name = "vote_count")
     val voteCount: Int?
-){
-    fun getThumbUrl(quality: ImageQuality) = "${BuildConfig.BASE_IMAGE_URL}${quality.value}$posterPath"
+): IPlayable{
+
+    override fun getThumbUrl(quality: ImageQuality) = "${BuildConfig.BASE_IMAGE_URL}${quality.value}$posterPath"
+    override fun getVideoUrl(): String {
+        TODO("Not yet implemented")
+    }
 }

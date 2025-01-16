@@ -1,16 +1,18 @@
 package com.serefa.themovieapp.feature.home.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.serefa.themovieapp.data.model.ImageQuality
-import com.serefa.themovieapp.data.model.Movie
+import com.serefa.themovieapp.data.model.movie.local.ImageQuality
+import com.serefa.themovieapp.data.model.movie.Movie
+import com.serefa.themovieapp.data.model.movie.local.Category
 import com.serefa.themovieapp.databinding.ItemMovieBinding
 import com.serefa.themovieapp.extensions.load
 
-class MovieAdapter: ListAdapter<Movie, RecyclerView.ViewHolder>(DiffCallback) {
+class MovieAdapter(val onMovieClick: (Movie) -> Unit): ListAdapter<Movie, RecyclerView.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MovieViewHolder(parent)
 
@@ -29,6 +31,9 @@ class MovieAdapter: ListAdapter<Movie, RecyclerView.ViewHolder>(DiffCallback) {
         fun bind(item: Movie) {
             binding.apply {
                 imageViewMovieImage.load(item.getThumbUrl(ImageQuality.THUMBNAIL))
+                root.setOnClickListener {
+                    onMovieClick(getItem(adapterPosition))
+                }
             }
         }
     }

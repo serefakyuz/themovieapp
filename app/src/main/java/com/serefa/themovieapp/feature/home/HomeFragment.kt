@@ -8,6 +8,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.serefa.themovieapp.R
+import com.serefa.themovieapp.data.model.movie.Movie
 import com.serefa.themovieapp.databinding.FragmentHomeBinding
 import com.serefa.themovieapp.feature.common.BaseFragment
 import com.serefa.themovieapp.feature.home.adapter.CategoryAdapter
@@ -20,8 +23,11 @@ class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
-    private val adapter: CategoryAdapter by lazy { CategoryAdapter() }
+    private val adapter: CategoryAdapter by lazy { CategoryAdapter(::onMovieClicked) }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +41,6 @@ class HomeFragment : BaseFragment() {
         observeData()
         binding.recyclerViewCategories.adapter = adapter
         adapter.submitList(viewModel.getCategories())
-            //findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
     }
 
     private fun observeData(){
@@ -65,6 +70,11 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun onMovieClicked(movie: Movie) {
+        val action = HomeFragmentDirections.actionFirstFragmentToSecondFragment(movie.id.toString())
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

@@ -1,4 +1,4 @@
-package com.serefa.themovieapp.data.model
+package com.serefa.themovieapp.data.model.movie.local
 
 enum class Category(val value: String) {
     POPULAR("popular"),

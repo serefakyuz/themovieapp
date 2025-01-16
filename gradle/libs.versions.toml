@@ -16,6 +16,7 @@ constraintlayout = "2.2.0"
 moshiKotlin = "1.15.0"
 navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
+androidxNavigationSafeargsGradlePlugin = "2.7.7"
 retrofit = "2.9.0"
 moshiConverterVersion = "2.9.0"
 
@@ -43,3 +44,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref ="hiltAndroid" }
+androidx-navigation-safe-args = { id ="androidx.navigation.safeargs.kotlin",version.ref ="androidxNavigationSafeargsGradlePlugin" }

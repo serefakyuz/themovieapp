@@ -1,6 +1,7 @@
 package com.serefa.themovieapp.api
 
-import com.serefa.themovieapp.data.model.MovieResponseModel
+import com.serefa.themovieapp.data.model.movie.MovieResponseModel
+import com.serefa.themovieapp.data.model.movie.detail.MovieDetailResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,7 +16,7 @@ interface ApiService {
 
 
     @GET("/3/movie/{movie_id}")
-    suspend fun getMovieDetails(
-        @Path("movie_id") movieId: Int
-    ): Response<MovieResponseModel>
+    suspend fun getMovieDetail(
+        @Path("movie_id") movieId: String
+    ): Response<MovieDetailResponse>
 }

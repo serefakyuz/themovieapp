@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ApiModule {
 
-    private const val QUERY_LANGUAGE = "en"
+    private const val QUERY_LANGUAGE = "en-US"
 
     @Singleton
     @Provides

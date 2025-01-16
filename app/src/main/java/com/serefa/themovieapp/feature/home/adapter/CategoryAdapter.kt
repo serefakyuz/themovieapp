@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.serefa.themovieapp.data.model.CategoryItem
+import com.serefa.themovieapp.data.model.movie.Movie
+import com.serefa.themovieapp.data.model.movie.local.CategoryItem
 import com.serefa.themovieapp.databinding.ItemCategoryBinding
 
-class CategoryAdapter : ListAdapter<CategoryItem, RecyclerView.ViewHolder>(DiffCallback) {
+class CategoryAdapter(val onMovieClick: (Movie) -> Unit) : ListAdapter<CategoryItem, RecyclerView.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CategoryViewHolder(parent)
 
@@ -39,11 +40,12 @@ class CategoryAdapter : ListAdapter<CategoryItem, RecyclerView.ViewHolder>(DiffC
             binding.apply {
                 textViewCategoryTitle.text =
                     binding.root.context.getString(item.getCategoryNameResId())
-                val adapter = MovieAdapter()
+                val adapter = MovieAdapter(onMovieClick)
                 recyclerViewMovies.adapter = adapter
                 adapter.submitList(item.movies)
 
             }
         }
     }
+
 }

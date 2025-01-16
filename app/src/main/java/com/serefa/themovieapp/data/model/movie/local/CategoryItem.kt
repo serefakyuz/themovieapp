@@ -1,6 +1,7 @@
-package com.serefa.themovieapp.data.model
+package com.serefa.themovieapp.data.model.movie.local
 
 import com.serefa.themovieapp.R
+import com.serefa.themovieapp.data.model.movie.Movie
 
 data class CategoryItem(
     var page: Int = 1,

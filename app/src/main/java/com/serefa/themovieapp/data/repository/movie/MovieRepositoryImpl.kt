@@ -11,4 +11,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovieList(sortBy: String, page: Int) = safeApiCall {
         api.getCharacterList(sortBy, page)
     }
+
+    override suspend fun getMovieDetail(movieId: String) = safeApiCall {
+        api.getMovieDetail(movieId)
+    }
 }

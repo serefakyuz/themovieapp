@@ -8,19 +8,22 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.serefa.themovieapp.feature.home.HomeFragment"
-        android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_home">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/SecondFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.serefa.themovieapp.SecondFragment"
+        android:name="com.serefa.themovieapp.feature.detail.MovieDetailFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_movie_detail">
 
+        <argument
+            android:name="movieId"
+            app:argType="string" />
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />

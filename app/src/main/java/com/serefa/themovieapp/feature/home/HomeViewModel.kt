@@ -2,9 +2,9 @@ package com.serefa.themovieapp.feature.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.serefa.themovieapp.data.model.Category
-import com.serefa.themovieapp.data.model.CategoryItem
-import com.serefa.themovieapp.data.model.Movie
+import com.serefa.themovieapp.data.model.movie.local.Category
+import com.serefa.themovieapp.data.model.movie.local.CategoryItem
+import com.serefa.themovieapp.data.model.movie.Movie
 import com.serefa.themovieapp.data.repository.doOnFailure
 import com.serefa.themovieapp.data.repository.doOnLoading
 import com.serefa.themovieapp.data.repository.doOnSuccess
@@ -15,7 +15,6 @@ import com.serefa.themovieapp.data.repository.movie.usecase.TopRatedMoviesUseCas
 import com.serefa.themovieapp.feature.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -53,13 +52,10 @@ class HomeViewModel @Inject constructor(
             .doOnSuccess {
                 categoryMap[Category.POPULAR]?.movies?.addAll(it.results)
                 _popularMovies.value +=  it.results
-                Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
             }
             .doOnFailure {
-                Log.e("TAGTAGTAG", "getPopularMovies - FAIL: $it")
             }
             .doOnLoading {
-                Log.e("TAGTAGTAG", "getPopularMovies - LOADING:")
             }
             .collect()
     }
@@ -68,13 +64,10 @@ class HomeViewModel @Inject constructor(
             .doOnSuccess {
                 categoryMap[Category.TOP_RATED]?.movies?.addAll(it.results)
                 _topRatedMovies.value = it.results
-                Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
             }
             .doOnFailure {
-                Log.e("TAGTAGTAG", "getPopularMovies - FAIL: $it")
             }
             .doOnLoading {
-                Log.e("TAGTAGTAG", "getPopularMovies - LOADING:")
             }
             .collect()
     }
@@ -83,13 +76,10 @@ class HomeViewModel @Inject constructor(
             .doOnSuccess {
                 categoryMap[Category.REVENUE]?.movies?.addAll(it.results)
                 _revenueMovies.value = it.results
-                Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
             }
             .doOnFailure {
-                Log.e("TAGTAGTAG", "getPopularMovies - FAIL: $it")
             }
             .doOnLoading {
-                Log.e("TAGTAGTAG", "getPopularMovies - LOADING:")
             }
             .collect()
     }
@@ -98,13 +88,10 @@ class HomeViewModel @Inject constructor(
             .doOnSuccess {
                 categoryMap[Category.RELEASE_DATE]?.movies?.addAll(it.results)
                 _releaseDateMovies.value = it.results
-                Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
             }
             .doOnFailure {
-                Log.e("TAGTAGTAG", "getPopularMovies - FAIL: $it")
             }
             .doOnLoading {
-                Log.e("TAGTAGTAG", "getPopularMovies - LOADING:")
             }
             .collect()
     }
