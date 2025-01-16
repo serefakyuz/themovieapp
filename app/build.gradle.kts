@@ -21,6 +21,7 @@ android {
 
         buildConfigField("String", "ACCESS_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMDkyYWY1MjEyMjhhNDJkMzY0Nzk5YTI3NmYyZGM3ZSIsIm5iZiI6MTczNjcyMjk3NS40ODUsInN1YiI6IjY3ODQ0YTFmOTRmYzg3ZWY0ODdiMTlmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pA_sKXKMlQeDh4EOEt84LssvyaNtAzlm5PE3iKj9Fww\"")
         buildConfigField("String", "ROOT_URL", "\"https://api.themoviedb.org/\"")
+        buildConfigField("String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/\"")
     }
 
     buildTypes {
@@ -63,6 +64,9 @@ dependencies {
     //DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    //ImageLoader
+    implementation (libs.glide)
+    annotationProcessor(libs.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="categoryTopMargin">16dp</dimen>
+    <dimen name="componentTopMargin">8dp</dimen>
+    <dimen name="homeImageWidth">100dp</dimen>
+    <dimen name="movieItemRightMargin">4dp</dimen>
 </resources>

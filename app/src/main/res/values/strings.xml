@@ -11,6 +11,7 @@
     <string name="categoryRevenue">Revenue</string>
     <string name="categoryReleaseDate">Release Date</string>
 
+<!--    This is here to be able to support multi language-->
     <array name="homeScreenCategoryTitles">
         <item value="@string/categoryPopular"/>
         <item value="@string/categoryTopRated"/>
@@ -55,4 +56,5 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="undefinedCategory">Undefined Category</string>
 </resources>

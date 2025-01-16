@@ -2,13 +2,20 @@ package com.serefa.themovieapp.feature.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.serefa.themovieapp.data.model.Category
+import com.serefa.themovieapp.data.model.CategoryItem
 import com.serefa.themovieapp.data.model.Movie
 import com.serefa.themovieapp.data.repository.doOnFailure
 import com.serefa.themovieapp.data.repository.doOnLoading
 import com.serefa.themovieapp.data.repository.doOnSuccess
 import com.serefa.themovieapp.data.repository.movie.usecase.PopularMoviesUseCase
+import com.serefa.themovieapp.data.repository.movie.usecase.ReleaseDateMoviesUseCase
+import com.serefa.themovieapp.data.repository.movie.usecase.RevenueMoviesUseCase
+import com.serefa.themovieapp.data.repository.movie.usecase.TopRatedMoviesUseCase
 import com.serefa.themovieapp.feature.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -17,17 +24,80 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val popularMoviesUseCase: PopularMoviesUseCase
+    private val popularMoviesUseCase: PopularMoviesUseCase,
+    private val topRatedMoviesUseCase: TopRatedMoviesUseCase,
+    private val revenueMoviesUseCase: RevenueMoviesUseCase,
+    private val releaseDateMoviesUseCase: ReleaseDateMoviesUseCase
 ): BaseViewModel() {
 
+    private val categoryMap: Map<Category, CategoryItem> = mapOf(
+        Pair(Category.POPULAR, CategoryItem(category = Category.POPULAR)),
+        Pair(Category.TOP_RATED, CategoryItem(category = Category.TOP_RATED)),
+        Pair(Category.REVENUE, CategoryItem(category = Category.REVENUE)),
+        Pair(Category.RELEASE_DATE, CategoryItem(category = Category.RELEASE_DATE))
+    )
 
     private val _popularMovies = MutableStateFlow(emptyList<Movie>())
     val popularMovies get() = _popularMovies.asStateFlow()
+    private val _topRatedMovies = MutableStateFlow(emptyList<Movie>())
+    val topRatedMovies get() = _topRatedMovies.asStateFlow()
+    private val _revenueMovies = MutableStateFlow(emptyList<Movie>())
+    val revenueMovies get() = _revenueMovies.asStateFlow()
+    private val _releaseDateMovies = MutableStateFlow(emptyList<Movie>())
+    val releaseDateMovies get() = _releaseDateMovies.asStateFlow()
 
-    fun getPopularMovies(page: Int) = viewModelScope.launch{
+    fun getCategories() = categoryMap.values.toList()
+
+    private fun getPopularMovies(page: Int) = viewModelScope.launch{
         popularMoviesUseCase(page)
             .doOnSuccess {
-                _popularMovies.value = it.results
+                categoryMap[Category.POPULAR]?.movies?.addAll(it.results)
+                _popularMovies.value +=  it.results
+                Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
+            }
+            .doOnFailure {
+                Log.e("TAGTAGTAG", "getPopularMovies - FAIL: $it")
+            }
+            .doOnLoading {
+                Log.e("TAGTAGTAG", "getPopularMovies - LOADING:")
+            }
+            .collect()
+    }
+    private fun getTopRatedMovies(page: Int) = viewModelScope.launch{
+        topRatedMoviesUseCase(page)
+            .doOnSuccess {
+                categoryMap[Category.TOP_RATED]?.movies?.addAll(it.results)
+                _topRatedMovies.value = it.results
+                Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
+            }
+            .doOnFailure {
+                Log.e("TAGTAGTAG", "getPopularMovies - FAIL: $it")
+            }
+            .doOnLoading {
+                Log.e("TAGTAGTAG", "getPopularMovies - LOADING:")
+            }
+            .collect()
+    }
+    private fun getRevenueMovies(page: Int) = viewModelScope.launch{
+        revenueMoviesUseCase(page)
+            .doOnSuccess {
+                categoryMap[Category.REVENUE]?.movies?.addAll(it.results)
+                _revenueMovies.value = it.results
+                Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
+            }
+            .doOnFailure {
+                Log.e("TAGTAGTAG", "getPopularMovies - FAIL: $it")
+            }
+            .doOnLoading {
+                Log.e("TAGTAGTAG", "getPopularMovies - LOADING:")
+            }
+            .collect()
+    }
+    private fun getReleaseDateMovies(page: Int) = viewModelScope.launch{
+        releaseDateMoviesUseCase(page)
+            .doOnSuccess {
+                categoryMap[Category.RELEASE_DATE]?.movies?.addAll(it.results)
+                _releaseDateMovies.value = it.results
                 Log.e("TAGTAGTAG", "getPopularMovies: " + it.results?.size )
             }
             .doOnFailure {
@@ -40,7 +110,16 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        getPopularMovies(1)
+        viewModelScope.launch {
+            coroutineScope {
+                launch {
+                    getPopularMovies(1)
+                    getTopRatedMovies(1)
+                    getRevenueMovies(1)
+                    getReleaseDateMovies(1)
+                }
+            }
+        }
     }
 
 }

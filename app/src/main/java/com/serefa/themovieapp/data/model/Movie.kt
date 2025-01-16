@@ -1,6 +1,7 @@
 package com.serefa.themovieapp.data.model
 
 
+import com.serefa.themovieapp.BuildConfig
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -34,4 +35,6 @@ data class Movie(
     val voteAverage: Double?,
     @Json(name = "vote_count")
     val voteCount: Int?
-)
+){
+    fun getThumbUrl(quality: ImageQuality) = "${BuildConfig.BASE_IMAGE_URL}${quality.value}$posterPath"
+}
