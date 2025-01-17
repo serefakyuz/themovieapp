@@ -1,5 +1,8 @@
 package com.serefa.themovieapp.di
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.serefa.themovieapp.BuildConfig
 import com.serefa.themovieapp.api.ApiService
 import com.squareup.moshi.Moshi
@@ -7,7 +10,9 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,6 +26,27 @@ object ApiModule {
 
     private const val QUERY_LANGUAGE = "en-US"
 
+    private const val CACHE_SIZE = 1024 * 1024 * 20L
+    private const val CACHE_MAX_AGE = 60 * 60
+    private const val CACHE_MAX_STALE = 60 * 60 * 24 * 7
+
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
+        with(networkCapabilities) {
+            return when {
+                hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
+            }
+        }
+    }
+
     @Singleton
     @Provides
     fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
@@ -29,7 +55,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideInterceptor(): Interceptor =
+    fun provideInterceptor(@ApplicationContext context: Context): Interceptor =
         Interceptor { chain ->
             val url = chain.request()
                 .url
@@ -37,10 +63,15 @@ object ApiModule {
                 .addQueryParameter("language", QUERY_LANGUAGE)
                 .build()
 
+            val cacheHeaderValue =
+                if (isNetworkAvailable(context)) "public, max-age=$CACHE_MAX_AGE"
+                else "public, only-if-cached, max-stale=$CACHE_MAX_STALE"
+
             val request = chain.request()
                 .newBuilder()
                 .addHeader("accept", "application/json")
                 .addHeader("Authorization", "Bearer ${BuildConfig.ACCESS_TOKEN}")
+                .addHeader("Cache-Control", cacheHeaderValue)
                 .url(url)
                 .build()
 
@@ -49,7 +80,12 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, customInterceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
+    fun provideOkHttpClient(
+        @ApplicationContext context: Context,
+        loggingInterceptor: HttpLoggingInterceptor,
+        customInterceptor: Interceptor
+    ): OkHttpClient = OkHttpClient.Builder()
+        .cache(Cache(context.cacheDir, CACHE_SIZE))
         .addInterceptor(loggingInterceptor)
         .addInterceptor(customInterceptor)
         .build()
