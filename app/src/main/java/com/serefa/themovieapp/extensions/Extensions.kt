@@ -6,5 +6,6 @@ import com.bumptech.glide.Glide
 fun ImageView.load(url: String) {
     Glide.with(context)
         .load(url)
+        .placeholder(android.R.drawable.ic_menu_gallery)
         .into(this)
 }

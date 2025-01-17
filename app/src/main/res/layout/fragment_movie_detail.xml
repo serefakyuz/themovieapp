@@ -12,9 +12,8 @@
         <ImageView
             android:id="@+id/imageViewLargePoster"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="H,9:16"
-            android:minHeight="200dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H,16:9"
             app:layout_constraintTop_toTopOf="parent"
             />
         <ImageView
