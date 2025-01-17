@@ -5,6 +5,7 @@ import com.serefa.themovieapp.data.model.movie.Movie
 
 data class CategoryItem(
     var page: Int = 1,
+    var totalPages: Int = 1,
     val category: Category,
     var movies: MutableList<Movie> = mutableListOf()
 ){

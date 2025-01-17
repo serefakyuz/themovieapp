@@ -3,6 +3,7 @@
     <dimen name="mainContainerPadding">16dp</dimen>
     <dimen name="categoryTopMargin">16dp</dimen>
     <dimen name="componentTopMargin">8dp</dimen>
-    <dimen name="homeImageWidth">150dp</dimen>
+    <dimen name="homeImageWidth">160dp</dimen>
+    <dimen name="homeImageHeight">240dp</dimen>
     <dimen name="movieItemRightMargin">4dp</dimen>
 </resources>

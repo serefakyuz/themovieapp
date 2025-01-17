@@ -3,13 +3,20 @@ package com.serefa.themovieapp.feature.home.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.serefa.themovieapp.data.model.movie.Movie
+import com.serefa.themovieapp.data.model.movie.local.Category
 import com.serefa.themovieapp.data.model.movie.local.CategoryItem
 import com.serefa.themovieapp.databinding.ItemCategoryBinding
+import com.serefa.themovieapp.feature.common.PaginationScrollListener
 
-class CategoryAdapter(val onMovieClick: (Movie) -> Unit) : ListAdapter<CategoryItem, RecyclerView.ViewHolder>(DiffCallback) {
+class CategoryAdapter(
+    val onMovieClick: (Movie) -> Unit,
+    val loadMore: (CategoryItem) -> Unit) : ListAdapter<CategoryItem, RecyclerView.ViewHolder>(DiffCallback) {
+
+    private val categoryMap = mutableMapOf<Category, Pair<RecyclerView, PaginationScrollListener>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CategoryViewHolder(parent)
 
@@ -24,6 +31,13 @@ class CategoryAdapter(val onMovieClick: (Movie) -> Unit) : ListAdapter<CategoryI
 
         override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean =
             oldItem == newItem
+    }
+
+    fun notifyItemRangeChanged(category: Category){
+        val recyclerView = categoryMap[category]?.first
+        val scrollListener = categoryMap[category]?.second
+        recyclerView?.adapter?.notifyItemRangeChanged(itemCount - 20, categoryMap[category]?.first?.adapter?.itemCount?:0)
+        scrollListener?.setLoaded()
     }
 
     inner class CategoryViewHolder private constructor(val binding: ItemCategoryBinding) :
@@ -43,9 +57,13 @@ class CategoryAdapter(val onMovieClick: (Movie) -> Unit) : ListAdapter<CategoryI
                 val adapter = MovieAdapter(onMovieClick)
                 recyclerViewMovies.adapter = adapter
                 adapter.submitList(item.movies)
-
+                recyclerViewMovies.tag = item
+                val scrollListener = PaginationScrollListener(
+                    (recyclerViewMovies.layoutManager as LinearLayoutManager), loadMore)
+                recyclerViewMovies.addOnScrollListener(scrollListener)
+                scrollListener.setLoaded()
+                categoryMap[item.category] = Pair(recyclerViewMovies, scrollListener)
             }
         }
     }
-
 }

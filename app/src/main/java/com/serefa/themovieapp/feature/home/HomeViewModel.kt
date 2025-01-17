@@ -50,7 +50,9 @@ class HomeViewModel @Inject constructor(
     private fun getPopularMovies(page: Int) = viewModelScope.launch{
         popularMoviesUseCase(page)
             .doOnSuccess {
-                categoryMap[Category.POPULAR]?.movies?.addAll(it.results)
+                val category = categoryMap[Category.POPULAR]
+                category?.totalPages = it.totalPages?:0
+                category?.movies?.addAll(it.results)
                 _popularMovies.value +=  it.results
             }
             .doOnFailure {
@@ -62,7 +64,9 @@ class HomeViewModel @Inject constructor(
     private fun getTopRatedMovies(page: Int) = viewModelScope.launch{
         topRatedMoviesUseCase(page)
             .doOnSuccess {
-                categoryMap[Category.TOP_RATED]?.movies?.addAll(it.results)
+                val category = categoryMap[Category.TOP_RATED]
+                category?.totalPages = it.totalPages?:0
+                category?.movies?.addAll(it.results)
                 _topRatedMovies.value = it.results
             }
             .doOnFailure {
@@ -74,7 +78,9 @@ class HomeViewModel @Inject constructor(
     private fun getRevenueMovies(page: Int) = viewModelScope.launch{
         revenueMoviesUseCase(page)
             .doOnSuccess {
-                categoryMap[Category.REVENUE]?.movies?.addAll(it.results)
+                val category = categoryMap[Category.REVENUE]
+                category?.totalPages = it.totalPages?:0
+                category?.movies?.addAll(it.results)
                 _revenueMovies.value = it.results
             }
             .doOnFailure {
@@ -86,7 +92,9 @@ class HomeViewModel @Inject constructor(
     private fun getReleaseDateMovies(page: Int) = viewModelScope.launch{
         releaseDateMoviesUseCase(page)
             .doOnSuccess {
-                categoryMap[Category.RELEASE_DATE]?.movies?.addAll(it.results)
+                val category = categoryMap[Category.RELEASE_DATE]
+                category?.totalPages = it.totalPages?:0
+                category?.movies?.addAll(it.results)
                 _releaseDateMovies.value = it.results
             }
             .doOnFailure {
@@ -94,6 +102,18 @@ class HomeViewModel @Inject constructor(
             .doOnLoading {
             }
             .collect()
+    }
+    fun loadMore(category: CategoryItem){
+        category.page++
+        if(category.page > category.totalPages) return
+        when(category.category){
+            Category.POPULAR -> getPopularMovies(category.page)
+            Category.TOP_RATED -> getTopRatedMovies(category.page)
+            Category.REVENUE -> getRevenueMovies(category.page)
+            Category.RELEASE_DATE -> getReleaseDateMovies(category.page)
+            else -> Log.e("HomeViewModel", "Unknown category")
+
+        }
     }
 
     init {

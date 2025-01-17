@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.serefa.themovieapp.data.model.movie.Movie
+import com.serefa.themovieapp.data.model.movie.local.Category
 import com.serefa.themovieapp.databinding.FragmentHomeBinding
 import com.serefa.themovieapp.feature.common.BaseFragment
 import com.serefa.themovieapp.feature.home.adapter.CategoryAdapter
@@ -22,7 +23,7 @@ class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
-    private val adapter: CategoryAdapter by lazy { CategoryAdapter(::onMovieClicked) }
+    private val adapter: CategoryAdapter by lazy { CategoryAdapter(::onMovieClicked, viewModel::loadMore) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,22 +49,22 @@ class HomeFragment : BaseFragment() {
                 viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     launch {
                         popularMovies.collect { state ->
-                            adapter.notifyItemChanged(0)
+                            adapter.notifyItemRangeChanged(Category.POPULAR)
                         }
                     }
                     launch {
                         topRatedMovies.collect { state ->
-                            adapter.notifyItemChanged(1)
+                            adapter.notifyItemRangeChanged(Category.TOP_RATED)
                         }
                     }
                     launch {
                         revenueMovies.collect { state ->
-                            adapter.notifyItemChanged(2)
+                            adapter.notifyItemRangeChanged(Category.REVENUE)
                         }
                     }
                     launch {
                         releaseDateMovies.collect { state ->
-                            adapter.notifyItemChanged(3)
+                            adapter.notifyItemRangeChanged(Category.RELEASE_DATE)
                         }
                     }
                 }

@@ -7,9 +7,9 @@
     <ImageView
         android:id="@+id/imageViewMovieImage"
         android:layout_width="@dimen/homeImageWidth"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/homeImageHeight"
         android:adjustViewBounds="true"
-        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintDimensionRatio="H,2:3"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
